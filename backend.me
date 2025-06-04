@@ -1,35 +1,31 @@
 backend/
-├── app/
-│   ├── main.py                   # Entry point (FastAPI app)
+│── app/
+│   ├── main.py               # FastAPI entrypoint, includes routers
+│   ├── db.py                 # SQLAlchemy setup (engine, Base, get_db)
+│   ├── config.py             # later for env vars (SECRET_KEY, DB_URL, etc.)
 │   │
-│   ├── api/                      # API routes
-│   │   ├── papers.py             # /papers - search, fetch metadata
-│   │   ├── chat.py               # /chat - chat with paper
-│   │   ├── users.py              # /users - login, preferences
-│   │   └── recommend.py          # /recommend - personalized feed
+│   ├── auth/                 # Authentication module
+│   │   ├── models.py         # User model (SQLAlchemy)
+│   │   ├── routes.py         # Signup, login, get current user
+│   │   ├── utils.py          # Hashing + JWT helpers
 │   │
-│   ├── services/                 # Core business logic
-│   │   ├── arxiv_service.py      # Fetch from arXiv API
-│   │   ├── embedding_service.py  # Generate embeddings
-│   │   ├── rag_service.py        # Retrieval-augmented generation
-│   │   └── recommendation.py     # Personalization logic
+│   ├── papers/               # Paper fetching / storage
+│   │   ├── models.py         # Paper model
+│   │   ├── routes.py         # Endpoints for paper search/fetch
+│   │   ├── services.py       # Functions to call arXiv API, store papers
 │   │
-│   ├── models/                   # Database models / schemas
-│   │   ├── user.py
-│   │   ├── paper.py
-│   │   └── embeddings.py
+│   ├── feed/                 # Personalized feed
+│   │   ├── routes.py         # /feed endpoint
+│   │   ├── recommender.py    # Recommendation logic (keywords/embeddings)
 │   │
-│   ├── db/                       # Database + vector DB setup
-│   │   ├── postgres.py
-│   │   ├── faiss_index.py
-│   │   └── redis_cache.py
+│   ├── chat/                 # Chat with paper
+│   │   ├── routes.py         # Chat endpoints
+│   │   ├── llm_service.py    # Wrapper for Ollama / OpenAI API
+│   │   ├── embeddings.py     # Embedding + similarity functions
 │   │
-│   ├── utils/                    # Helpers
-│   │   ├── pdf_parser.py         # Extract text from PDFs
-│   │   ├── chunker.py            # Break text into chunks
-│   │   └── logger.py
-│   │
-│   └── config.py                 # Settings (API keys, DB URI, Ollama)
+│   └── utils/                # Common utilities
+│       ├── logger.py         # Optional logging setup
+│       ├── pdf_parser.py     # Helper to extract text from PDF
 │
 ├── requirements.txt
 └── README.md
