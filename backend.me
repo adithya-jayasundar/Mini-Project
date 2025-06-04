@@ -1,0 +1,35 @@
+backend/
+├── app/
+│   ├── main.py                   # Entry point (FastAPI app)
+│   │
+│   ├── api/                      # API routes
+│   │   ├── papers.py             # /papers - search, fetch metadata
+│   │   ├── chat.py               # /chat - chat with paper
+│   │   ├── users.py              # /users - login, preferences
+│   │   └── recommend.py          # /recommend - personalized feed
+│   │
+│   ├── services/                 # Core business logic
+│   │   ├── arxiv_service.py      # Fetch from arXiv API
+│   │   ├── embedding_service.py  # Generate embeddings
+│   │   ├── rag_service.py        # Retrieval-augmented generation
+│   │   └── recommendation.py     # Personalization logic
+│   │
+│   ├── models/                   # Database models / schemas
+│   │   ├── user.py
+│   │   ├── paper.py
+│   │   └── embeddings.py
+│   │
+│   ├── db/                       # Database + vector DB setup
+│   │   ├── postgres.py
+│   │   ├── faiss_index.py
+│   │   └── redis_cache.py
+│   │
+│   ├── utils/                    # Helpers
+│   │   ├── pdf_parser.py         # Extract text from PDFs
+│   │   ├── chunker.py            # Break text into chunks
+│   │   └── logger.py
+│   │
+│   └── config.py                 # Settings (API keys, DB URI, Ollama)
+│
+├── requirements.txt
+└── README.md

@@ -1,0 +1,38 @@
+frontend/
+├── public/                       # Static files (logos, icons, fonts)
+│   └── favicon.ico
+├── src/
+│   ├── components/               # Reusable UI components
+│   │   ├── Navbar.jsx
+│   │   ├── Sidebar.jsx
+│   │   ├── PaperCard.jsx         # Each paper in feed
+│   │   ├── SearchBar.jsx
+│   │   ├── ChatBox.jsx
+│   │   └── Loader.jsx
+│   │
+│   ├── pages/                    # Route-based pages
+│   │   ├── index.jsx             # Home (feed of papers)
+│   │   ├── search.jsx            # Search results page
+│   │   ├── paper/[id].jsx        # Individual paper details + chat
+│   │   └── profile.jsx           # User preferences
+│   │
+│   ├── services/                 # API calls to backend
+│   │   ├── api.js                # axios/fetch wrapper
+│   │   ├── paperService.js       # search, fetch metadata
+│   │   ├── chatService.js        # chat with paper
+│   │   └── userService.js        # login/preferences
+│   │
+│   ├── context/                  # Global state (Auth, User, Feed)
+│   │   └── UserContext.jsx
+│   │
+│   ├── utils/                    # Helper functions
+│   │   ├── formatDate.js
+│   │   └── highlightText.js
+│   │
+│   ├── styles/                   # Tailwind/custom styles
+│   │   └── globals.css
+│   │
+│   └── App.jsx                   # Root component
+│
+├── package.json
+└── tailwind.config.js
