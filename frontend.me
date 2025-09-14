@@ -1,38 +1,46 @@
 frontend/
-├── public/                       # Static files (logos, icons, fonts)
+├── public/                       # Static assets (favicon, logo, etc.)
 │   └── favicon.ico
+│
 ├── src/
-│   ├── components/               # Reusable UI components
+│   ├── components/               # Reusable UI building blocks
 │   │   ├── Navbar.jsx
 │   │   ├── Sidebar.jsx
-│   │   ├── PaperCard.jsx         # Each paper in feed
+│   │   ├── PaperCard.jsx         # Paper preview in feed/search
 │   │   ├── SearchBar.jsx
 │   │   ├── ChatBox.jsx
 │   │   └── Loader.jsx
 │   │
 │   ├── pages/                    # Route-based pages
-│   │   ├── index.jsx             # Home (feed of papers)
-│   │   ├── search.jsx            # Search results page
-│   │   ├── paper/[id].jsx        # Individual paper details + chat
-│   │   └── profile.jsx           # User preferences
+│   │   ├── Home.jsx              # Personalized feed
+│   │   ├── Search.jsx            # Search results
+│   │   ├── PaperDetails.jsx      # Individual paper + chat
+│   │   ├── Profile.jsx           # User preferences & profile
+│   │   └── Auth.jsx              # Login / Signup page
 │   │
-│   ├── services/                 # API calls to backend
-│   │   ├── api.js                # axios/fetch wrapper
-│   │   ├── paperService.js       # search, fetch metadata
-│   │   ├── chatService.js        # chat with paper
-│   │   └── userService.js        # login/preferences
+│   ├── services/                 # API service layer
+│   │   ├── api.js                # Axios/fetch wrapper
+│   │   ├── paperService.js       # Search, fetch paper metadata
+│   │   ├── chatService.js        # Chat with paper API
+│   │   └── userService.js        # Auth, user preferences
 │   │
-│   ├── context/                  # Global state (Auth, User, Feed)
-│   │   └── UserContext.jsx
+│   ├── context/                  # Global state management
+│   │   ├── AuthContext.jsx       # Authentication state (JWT, user info)
+│   │   └── FeedContext.jsx       # For personalized recommendations
 │   │
 │   ├── utils/                    # Helper functions
-│   │   ├── formatDate.js
-│   │   └── highlightText.js
+│   │   ├── formatDate.js         # Format paper dates
+│   │   └── highlightText.js      # Highlight keywords in abstracts
 │   │
-│   ├── styles/                   # Tailwind/custom styles
+│   ├── styles/                   # Tailwind + custom CSS
 │   │   └── globals.css
 │   │
-│   └── App.jsx                   # Root component
+│   ├── App.jsx                   # Root component with routing
+│   ├── main.jsx                  # Vite entrypoint
+│   └── router.jsx                # React Router config
 │
+├── .env                          # API base URLs, secrets (never commit)
 ├── package.json
-└── tailwind.config.js
+├── tailwind.config.js
+├── postcss.config.js
+└── vite.config.js
