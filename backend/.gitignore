@@ -1,0 +1,32 @@
+# ------------------------
+# Python / FastAPI backend
+# ------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local SQLite database files
+*.db
+*.sqlite3
+
+# Virtual environment
+venv/
+.env
+.env.*
+
+# Logs
+*.log
+
+# Test / Coverage caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor / IDE configs
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
