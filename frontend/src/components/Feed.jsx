@@ -1,72 +1,117 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { feedAPI, transformPaperData } from '../utils/api';
 
-const papers = [
-  {
-    id: 1,
-    title: 'Deep Learning for Natural Language Processing',
-    authors: 'Jane Doe, John Smith',
-    abstract: 'A comprehensive overview of deep learning methods for NLP tasks.'
-  },
-  {
-    id: 2,
-    title: 'Graph Neural Networks: A Review',
-    authors: 'Alice Lee, Bob Brown',
-    abstract: 'Survey of graph neural network architectures and applications.'
-  },
-  {
-    id: 3,
-    title: 'Efficient Transformers for Large-Scale Language Models',
-    authors: 'Carol White, David Black',
-    abstract: 'Techniques for scaling transformers efficiently.'
-  },
-  {
-    id: 4,
-    title: 'Contrastive Learning in Computer Vision',
-    authors: 'Eve Green, Frank Blue',
-    abstract: 'Contrastive learning approaches for visual representation.'
-  },
-  {
-    id: 5,
-    title: 'Reinforcement Learning: State of the Art',
-    authors: 'Grace Red, Henry Yellow',
-    abstract: 'Recent advances in reinforcement learning.'
-  },
-  {
-    id: 6,
-    title: 'Self-Supervised Learning in AI',
-    authors: 'Ivy Orange, Jack Purple',
-    abstract: 'Self-supervised learning methods and applications.'
-  },
-  {
-    id: 7,
-    title: 'Federated Learning for Privacy',
-    authors: 'Karen Pink, Leo Cyan',
-    abstract: 'Federated learning and privacy-preserving AI.'
-  },
-  {
-    id: 8,
-    title: 'Explainable AI: Methods and Trends',
-    authors: 'Mona Lime, Nick Navy',
-    abstract: 'Overview of explainable AI techniques.'
+const Feed = ({ onChat, searchQuery = null }) => {
+  const [papers, setPapers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchPapers = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        
+        let response;
+        if (searchQuery && searchQuery.trim()) {
+          response = await feedAPI.searchPapers(searchQuery.trim());
+        } else {
+          response = await feedAPI.getPersonalizedFeed();
+        }
+        
+        const transformedPapers = response.map(transformPaperData);
+        setPapers(transformedPapers);
+      } catch (err) {
+        setError(err.message || "Failed to fetch papers");
+        console.error("Feed fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPapers();
+  }, [searchQuery]);
+
+  if (loading) {
+    return (
+      <div className="feed-scrollable">
+        <h2 style={{ marginBottom: '2rem', fontSize: '1.8em' }}>
+          {searchQuery ? `🔍 Search: "${searchQuery}"` : "📚 Recommended Papers"}
+        </h2>
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '3rem',
+          background: 'var(--white)',
+          borderRadius: '16px',
+          boxShadow: 'var(--shadow-md)'
+        }}>
+          <div className="spinner" style={{ 
+            width: '48px', 
+            height: '48px', 
+            borderWidth: '4px',
+            margin: '0 auto 1rem'
+          }}></div>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1em' }}>Loading papers...</p>
+        </div>
+      </div>
+    );
   }
-];
 
-const Feed = ({ onChat }) => {
+  if (error) {
+    return (
+      <div className="feed-scrollable">
+        <h2 style={{ marginBottom: '2rem', fontSize: '1.8em' }}>
+          {searchQuery ? `🔍 Search: "${searchQuery}"` : "📚 Recommended Papers"}
+        </h2>
+        <div className="error-message" style={{ maxWidth: '600px', margin: '0 auto' }}>
+          ⚠️ {error}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="feed-scrollable">
-      <h2>Recommended Papers</h2>
-      <div className="feed">
-        {papers.map((paper) => (
-          <div className="paper-card small" key={paper.id}>
-            <div className="paper-title">{paper.title}</div>
-            <div className="paper-authors">{paper.authors}</div>
-            <div style={{ fontSize: '0.92em', color: '#2563eb', marginBottom: '0.7em' }}>{paper.abstract}</div>
-            <button className="chat-icon-btn" onClick={() => onChat(paper.title)}>
-              <span role="img" aria-label="chat">💬</span> Chat with the paper
-            </button>
-          </div>
-        ))}
-      </div>
+      <h2 style={{ marginBottom: '2rem', fontSize: '1.8em' }}>
+        {searchQuery ? `🔍 Search: "${searchQuery}"` : "📚 Recommended Papers"}
+      </h2>
+      {papers.length === 0 ? (
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '3rem',
+          background: 'var(--white)',
+          borderRadius: '16px',
+          boxShadow: 'var(--shadow-md)',
+          color: 'var(--text-secondary)'
+        }}>
+          <div style={{ fontSize: '3em', marginBottom: '1rem' }}>📭</div>
+          <p style={{ fontSize: '1.1em' }}>No papers found</p>
+        </div>
+      ) : (
+        <div className="feed">
+          {papers.map((paper) => (
+            <div className="paper-card" key={paper.id}>
+              <div className="paper-title">{paper.title}</div>
+              <div className="paper-authors">{paper.authors}</div>
+              <div className="paper-abstract">{paper.abstract}</div>
+              <div className="paper-actions">
+                <button className="chat-icon-btn" onClick={() => onChat(paper)}>
+                  💬 Chat
+                </button>
+                {paper.pdf_url && (
+                  <button 
+                    className="pdf-btn" 
+                    onClick={() => window.open(paper.pdf_url, '_blank')}
+                    title="Open PDF in new tab"
+                  >
+                    📄 PDF
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -24,7 +24,7 @@ class PaperMeta(BaseModel):
     arxiv_id: str | None = None
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "title": "Attention Is All You Need",
                 "authors": ["Ashish Vaswani", "Noam Shazeer"],

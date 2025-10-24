@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import { authAPI } from "../utils/api";
 import "../App.css";
 
 export default function SettingsModal({ user, onClose, onUpdate, onLogout }) {
   const [form, setForm] = useState({
     name: user.name || "",
-    affiliation: user.affiliation || "",
-    interest: user.interest || "",
-    customInterest: user.customInterest || "",
+    affiliation: user.degree || user.affiliation || "",
+    interest: user.interests && user.interests[0] ? user.interests[0] : "",
+    customInterest: user.interests && user.interests[0] && !["Artificial Intelligence", "Machine Learning", "Data Science", "Computer Vision", "Natural Language Processing", "Robotics", "Cybersecurity", "Quantum Computing", "Bioinformatics", "Blockchain"].includes(user.interests[0]) ? user.interests[0] : "",
     email: user.email || ""
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const popularTopics = [
     "Artificial Intelligence",
@@ -28,15 +30,25 @@ export default function SettingsModal({ user, onClose, onUpdate, onLogout }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!form.name || !form.affiliation || !(form.interest || form.customInterest) || !form.email) {
-      setError("Please fill all fields.");
-      return;
+    setLoading(true);
+
+    try {
+      if (!form.name || !form.affiliation || !(form.interest || form.customInterest) || !form.email) {
+        setError("Please fill all fields.");
+        return;
+      }
+
+      const updatedUser = await authAPI.updateProfile(form);
+      onUpdate(updatedUser);
+      onClose();
+    } catch (err) {
+      setError(err.message || "Failed to update profile");
+    } finally {
+      setLoading(false);
     }
-    onUpdate(form);
-    onClose();
   };
 
   return (
@@ -95,7 +107,9 @@ export default function SettingsModal({ user, onClose, onUpdate, onLogout }) {
             className="auth-input"
           />
           {error && <div className="auth-error">{error}</div>}
-          <button className="auth-btn" type="submit">Save</button>
+          <button className="auth-btn" type="submit" disabled={loading}>
+            {loading ? "Saving..." : "Save"}
+          </button>
         </form>
         <button className="auth-btn" style={{background:'var(--primary-blue-dark)',marginTop:12}} onClick={onLogout}>Logout</button>
       </div>

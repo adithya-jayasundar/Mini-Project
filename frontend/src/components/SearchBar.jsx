@@ -1,11 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const SearchBar = ({ onSearch }) => {
-  // Placeholder: Replace with actual search logic
+const SearchBar = ({ onSearch, currentSearchQuery }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSearch(searchQuery);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
+  const handleHome = () => {
+    setSearchQuery('');
+    onSearch(null); // Clear search to return to personalized feed
+  };
+
   return (
     <div className="search-bar">
-      <input type="text" placeholder="Search for research papers..." />
-      <button>Search</button>
+      {currentSearchQuery && (
+        <button 
+          className="home-btn" 
+          onClick={handleHome}
+          title="Back to personalized feed"
+        >
+          <span role="img" aria-label="home">🏠</span> Home
+        </button>
+      )}
+      <input 
+        type="text" 
+        placeholder="Search for research papers..." 
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onKeyPress={handleKeyPress}
+      />
+      <button onClick={handleSubmit}>Search</button>
     </div>
   );
 };

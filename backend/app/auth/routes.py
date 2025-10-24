@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.auth import models, schemas, utils
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(tags=["auth"])
 
 @router.post("/signup", response_model=schemas.UserResponse)
 def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -62,3 +62,43 @@ def login(user: schemas.UserLogin, response: Response, db: Session = Depends(get
     )
     
     return {"message": "Login successful"}
+
+@router.get("/profile", response_model=schemas.UserResponse)
+def get_profile(current_user: models.User = Depends(utils.get_current_user)):
+    """Get current user's profile"""
+    return current_user
+
+@router.put("/profile", response_model=schemas.UserResponse)
+def update_profile(
+    user_update: schemas.UserUpdate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(utils.get_current_user)
+):
+    """Update current user's profile"""
+    # Update user fields
+    if user_update.name is not None:
+        current_user.name = user_update.name
+    if user_update.email is not None:
+        # Check if email is already taken by another user
+        existing_user = db.query(models.User).filter(
+            models.User.email == user_update.email,
+            models.User.id != current_user.id
+        ).first()
+        if existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already taken"
+            )
+        current_user.email = user_update.email
+    if user_update.age is not None:
+        current_user.age = user_update.age
+    if user_update.degree is not None:
+        current_user.degree = user_update.degree
+    if user_update.year is not None:
+        current_user.year = user_update.year
+    if user_update.interests is not None:
+        current_user.interests = user_update.interests
+
+    db.commit()
+    db.refresh(current_user)
+    return current_user

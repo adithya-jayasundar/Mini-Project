@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { authAPI } from "../utils/api";
 import "../App.css";
 
 export default function LoginRegister({ onAuth }) {
@@ -13,6 +14,7 @@ export default function LoginRegister({ onAuth }) {
     customInterest: ""
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const popularTopics = [
     "Artificial Intelligence",
@@ -31,23 +33,37 @@ export default function LoginRegister({ onAuth }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!form.email || !form.password || (!isLogin && !form.confirm)) {
-      setError("Please fill all fields.");
-      return;
+    setLoading(true);
+
+    try {
+      if (!form.email || !form.password || (!isLogin && !form.confirm)) {
+        setError("Please fill all fields.");
+        return;
+      }
+      if (!isLogin && form.password !== form.confirm) {
+        setError("Passwords do not match.");
+        return;
+      }
+      if (!isLogin && (!form.name || !form.affiliation || !(form.interest || form.customInterest))) {
+        setError("Please fill all fields.");
+        return;
+      }
+
+      if (isLogin) {
+        await authAPI.login(form.email, form.password);
+        onAuth && onAuth({ email: form.email });
+      } else {
+        const userData = await authAPI.register(form);
+        onAuth && onAuth(userData);
+      }
+    } catch (err) {
+      setError(err.message || "An error occurred");
+    } finally {
+      setLoading(false);
     }
-    if (!isLogin && form.password !== form.confirm) {
-      setError("Passwords do not match.");
-      return;
-    }
-    if (!isLogin && (!form.name || !form.affiliation || !(form.interest || form.customInterest))) {
-      setError("Please fill all fields.");
-      return;
-    }
-    // Simulate auth success
-    onAuth && onAuth(form.email);
   };
 
   return (
@@ -128,8 +144,8 @@ export default function LoginRegister({ onAuth }) {
           />
         )}
         {error && <div className="auth-error">{error}</div>}
-        <button className="auth-btn" type="submit">
-          {isLogin ? "Login" : "Register"}
+        <button className="auth-btn" type="submit" disabled={loading}>
+          {loading ? "Loading..." : (isLogin ? "Login" : "Register")}
         </button>
         <div className="auth-toggle">
           {isLogin ? (
