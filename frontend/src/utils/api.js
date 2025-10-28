@@ -77,7 +77,6 @@ export const authAPI = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: userData.name,
-        email: userData.email,
         age: userData.age ? parseInt(userData.age) : null,
         degree: userData.affiliation || null,
         year: userData.year ? parseInt(userData.year) : null,

@@ -103,7 +103,6 @@ export default function SettingsModal({ user, onClose, onUpdate, onLogout }) {
             name="email"
             placeholder="Email"
             value={form.email}
-            onChange={handleChange}
             className="auth-input"
           />
           {error && <div className="auth-error">{error}</div>}

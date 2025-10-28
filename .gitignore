@@ -1,0 +1,131 @@
+# Project-level .gitignore for Mini-Project
+# Backend: Python
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+dist/
+eggs/
+*.egg-info/
+*.egg
+wheelhouse/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Virtualenvs
+.venv/
+venv/
+env/
+ENV/
+
+# Pyenv
+.python-version
+
+# Pytest
+.pytest_cache/
+
+# mypy
+.mypy_cache/
+
+# pyright
+report.txt
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+*.log.*
+logs/
+
+# dotenv
+.env
+.env.*
+.env.local
+
+# Database
+*.sqlite3
+*.db
+*.db-journal
+
+# Jupyter
+.ipynb_checkpoints
+
+# Node / frontend
+node_modules/
+/frontend/node_modules/
+dist/
+build/
+/npm-debug.log*
+/yarn-debug.log*
+/yarn-error.log*
+
+# Lockfiles (optional - consider committing lockfiles for reproducible installs)
+# package-lock.json
+# yarn.lock
+
+# Vite / local dev
+/.vite/
+
+# Frontend envs
+/frontend/.env
+/frontend/.env.local
+
+# OneDrive / Sync artifacts
+~$*
+~*.tmp
+
+# Editor swap files
+*~
+*.swp
+*.swo
+
+# Generated vector stores, caches and heavy local artifacts
+/faiss_index/
+/.paper_cache/
+/.cache/
+.cache/*
+
+# Serialized FAISS / pickles (if created locally) — don't add unless intended
+*.index
+*.pkl
+*.pickle
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+
+# Build system files
+*.egg-info
+*.egg
+
+# Secrets and keys
+*.pem
+*.key
+*.crt
+
+# Misc
+.DS_Store
+.idea/
+.vscode/
+
+# Allow checked-in files intentionally (uncomment if you want to keep lockfiles)
+# !package-lock.json
+# !yarn.lock

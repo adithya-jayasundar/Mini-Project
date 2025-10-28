@@ -1,8 +1,0 @@
-fastapi
-uvicorn
-requests
-sqlalchemy
-psycopg2-binary   # for Postgres
-faiss-cpu         # for local vector search
-sentence-transformers
-pydantic
