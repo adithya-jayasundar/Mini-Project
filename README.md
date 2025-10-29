@@ -410,7 +410,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Authors
 
 - **Adithya Jayasundar** - [GitHub](https://github.com/adithya-jayasundar)
-
+- **Aswin Krishna TP** - [GitHub](https://github.com/Aswintkpm1803)
+- **Mohammed Shammas P** - [GitHub](https://github.com/Shamzzz-star)
+  
 ## Acknowledgments
 
 - arXiv for providing open access to research papers
