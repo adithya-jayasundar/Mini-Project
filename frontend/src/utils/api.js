@@ -33,7 +33,7 @@ export const authAPI = {
           age: userData.age ? parseInt(userData.age) : null,
           degree: userData.affiliation || null,
           year: userData.year ? parseInt(userData.year) : null,
-          interests: userData.interest === 'custom' ? [userData.customInterest] : [userData.interest]
+          interests: userData.interests || []
         }),
         credentials: 'include'
       });
@@ -80,7 +80,7 @@ export const authAPI = {
         age: userData.age ? parseInt(userData.age) : null,
         degree: userData.affiliation || null,
         year: userData.year ? parseInt(userData.year) : null,
-        interests: userData.interest === 'custom' ? [userData.customInterest] : [userData.interest]
+        interests: userData.interests || []
       }),
       credentials: 'include'
     });
