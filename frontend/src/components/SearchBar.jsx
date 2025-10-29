@@ -27,7 +27,7 @@ const SearchBar = ({ onSearch, currentSearchQuery }) => {
           onClick={handleHome}
           title="Back to personalized feed"
         >
-          <span role="img" aria-label="home">🏠</span> Home
+          Home
         </button>
       )}
       <input 

@@ -39,10 +39,12 @@ function App() {
       <div className="app-container">
         <aside className="sidebar">
           <div className="profile">
-            <div className="profile-icon">👤</div>
+            <div className="profile-icon">
+              {user.name ? user.name.charAt(0).toUpperCase() : user.email ? user.email.charAt(0).toUpperCase() : ''}
+            </div>
             <div>{user.name ? user.name : user.email ? user.email : user}</div>
           </div>
-          <div className="settings" onClick={() => setShowSettings(true)} style={{cursor:'pointer'}}>⚙️ Settings</div>
+          <div className="settings" onClick={() => setShowSettings(true)} style={{cursor:'pointer'}}>Settings</div>
         </aside>
         <main className="main-content">
           <SearchBar onSearch={setSearchQuery} currentSearchQuery={searchQuery} />

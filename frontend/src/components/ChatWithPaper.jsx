@@ -53,7 +53,7 @@ const ChatWithPaper = ({ paper, paperTitle, onClose }) => {
               setIndexReady(true);
               setMessages([{
                 role: 'system',
-                content: '✓ Paper indexed successfully! Ask me anything about this paper.',
+                content: 'Paper indexed successfully! Ask me anything about this paper.',
                 timestamp: new Date().toISOString()
               }]);
               return;
@@ -64,7 +64,7 @@ const ChatWithPaper = ({ paper, paperTitle, onClose }) => {
               setError(res.detail || 'Index build failed');
               setMessages([{
                 role: 'system',
-                content: '⚠️ Failed to index paper. Please try again.',
+                content: 'Failed to index paper. Please try again.',
                 timestamp: new Date().toISOString()
               }]);
               return;
@@ -84,7 +84,7 @@ const ChatWithPaper = ({ paper, paperTitle, onClose }) => {
         setError(err.message || String(err));
         setMessages([{
           role: 'system',
-          content: '⚠️ Error: ' + (err.message || String(err)),
+          content: 'Error: ' + (err.message || String(err)),
           timestamp: new Date().toISOString()
         }]);
       }
@@ -137,7 +137,7 @@ const ChatWithPaper = ({ paper, paperTitle, onClose }) => {
         const newMessages = [...prev];
         newMessages[newMessages.length - 1] = {
           role: 'assistant',
-          content: '⚠️ Error: ' + (err.message || String(err)),
+          content: 'Error: ' + (err.message || String(err)),
           error: true,
           timestamp: new Date().toISOString()
         };
@@ -160,7 +160,7 @@ const ChatWithPaper = ({ paper, paperTitle, onClose }) => {
     <div className="chat-with-paper">
       <div className="chat-header">
         <div>
-          <h3>💬 Chat with Paper</h3>
+          <h3>Chat with Paper</h3>
           <div style={{ 
             fontSize: '0.85em', 
             opacity: 0.9, 
@@ -186,7 +186,7 @@ const ChatWithPaper = ({ paper, paperTitle, onClose }) => {
         {messages.map((msg, idx) => (
           <div key={idx} className={`message ${msg.role}`}>
             <div className="message-avatar">
-              {msg.role === 'user' ? '👤' : msg.role === 'system' ? '🤖' : '🤖'}
+              {msg.role === 'user' ? 'U' : 'A'}
             </div>
             <div className="message-content">
               {msg.loading ? (
@@ -209,7 +209,7 @@ const ChatWithPaper = ({ paper, paperTitle, onClose }) => {
       <div className="chat-input-container">
         {paper?.pdf_url && (
           <a href={paper.pdf_url} target="_blank" rel="noopener noreferrer" className="pdf-link-inline">
-            📄 View PDF
+            View PDF
           </a>
         )}
         <div className="chat-input-wrapper">
@@ -228,7 +228,7 @@ const ChatWithPaper = ({ paper, paperTitle, onClose }) => {
             className="send-btn"
             title="Send message"
           >
-            {loading ? '⏳' : '➤'}
+            {loading ? '...' : '→'}
           </button>
         </div>
       </div>
